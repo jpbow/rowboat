@@ -185,6 +185,7 @@ function ModelSettings({ dialogOpen }: { dialogOpen: boolean }) {
 
   const activeConfig = providerConfigs[provider]
   const requiresApiKey = provider === "openai" || provider === "anthropic" || provider === "google" || provider === "openrouter" || provider === "aigateway"
+  const showApiKey = requiresApiKey || provider === "openai-compatible"
   const showBaseURL = provider === "ollama" || provider === "openai-compatible" || provider === "aigateway"
   const requiresBaseURL = provider === "ollama" || provider === "openai-compatible"
   const isLocalProvider = provider === "ollama" || provider === "openai-compatible"
@@ -398,9 +399,11 @@ function ModelSettings({ dialogOpen }: { dialogOpen: boolean }) {
       </div>
 
       {/* API Key */}
-      {requiresApiKey && (
+      {showApiKey && (
         <div className="space-y-2">
-          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">API Key</span>
+          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wider">
+            API Key {!requiresApiKey && <span className="normal-case font-normal text-muted-foreground">(optional)</span>}
+          </span>
           <Input
             type="password"
             value={activeConfig.apiKey}
